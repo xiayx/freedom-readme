@@ -1,0 +1,80 @@
+//提供统一配置支持
+
+println "init.d/freedom.gradle start"
+
+ext {
+    freedom = [
+            group     : 'org.freedom',
+            version   : '1.0-SNAPSHOT',
+            repository: [
+                    url     : 'http://172.16.10.188:8081/nexus/content',
+//                    public_group   : "${freedom.repository.url}/groups/public/",
+//                    local_releases : "${freedom.repository.url}/repositories/releases/",
+//                    local_snapshots: "${freedom.repository.url}/repositories/snapshots/",
+                    username: 'admin',
+                    password: 'admin123'
+            ],
+            versions  : [
+                    spring_dependency_management: '1.0.4.RELEASE',
+                    spring_boot                 : '2.0.0.RELEASE'
+            ]
+    ]
+    freedom.repository.public_group = "${freedom.repository.url}/groups/public/"
+    freedom.repository.local_releases = "${freedom.repository.url}/repositories/releases/"
+    freedom.repository.local_snapshots = "${freedom.repository.url}/repositories/snapshots/"
+}
+
+/*
+//依赖管理配置，全局配置会有异常
+plugins {
+    id "io.spring.dependency-management" version "1.0.4.RELEASE"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-dependencies:$freedom.versions.spring_boot"
+    }
+}
+*/
+
+allprojects { project ->
+    //排除非freedom的项目
+    if (project.group.toString().startsWith(gradle.freedom.group)) return
+
+    ext.freedom = gradle.freedom
+
+    group freedom.group
+    version freedom.version
+
+    apply plugin: 'java'
+
+
+    repositories {
+        maven { url freedom.repository.public_group }
+    }
+
+    apply plugin: 'maven-publish'
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+
+        repositories {
+            maven {
+                def repository_url = project.version.endsWith('-SNAPSHOT') ? freedom.repository.local_snapshots : freedom.repository.local_releases
+                println "publish to repository: $repository_url"
+                url repository_url
+                credentials {
+                    username freedom.repository.username
+                    password freedom.repository.password
+                }
+            }
+        }
+    }
+}
+
+
+
+println "init.d/freedom.gradle end"

@@ -1,0 +1,36 @@
+= freedom-readme
+xiayx <xiayouxue@hotmail.com>
+v0.01, 2018-03-25: SNAPSHOT
+:doctype: docbook
+:toc: left
+:numbered:
+
+介绍各模块之间的关联关系及其具体依赖配置
+
+
+== 关于命名
+项目命名使用'org.freedom'，之前想过使用'name.xiayx'，
+但是总觉得以个人的名义放在一个公共的场所中不太友好，
+所以改成了组织，并取freedom寓意自由。
+
+== 如何提供类库？
+如何提供类库，目前能想到两种方式：
+
+. 上传至公共maven资源库，所有人都可以使用
+. 在Github上提供源码，检出后，上传至私服，公司内部员工可以使用
+
+方式1尚未尝试，先考虑通过方式2实现。
+
+=== 方式2的具体步骤
+* 使用nexus在本地搭建私服
+* 根据本地环境修改freedom.gradle中的具体配置
+* 将freedom.gradle拷贝至`~/.gradle/init.d`下
+* 检出freedom资源库，并上传至本地私服
+
+== 如何统一管理配置？
+使用freedom.gradle
+
+
+
+
+
