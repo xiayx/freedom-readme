@@ -9,9 +9,9 @@ v0.01, 2018-03-25: SNAPSHOT
 
 
 == 关于命名
-项目命名使用'org.freedom'，之前想过使用'name.xiayx'，
+项目命名使用``org.freedom``，之前想过使用``name.xiayx``，
 但是总觉得以个人的名义放在一个公共的场所中不太友好，
-所以改成了组织，并取freedom寓意自由。
+所以改成了组织，并取名freedom寓意自由。
 
 == 如何提供类库？
 如何提供类库，目前能想到两种方式：
@@ -24,13 +24,14 @@ v0.01, 2018-03-25: SNAPSHOT
 === 方式2的具体步骤
 * 使用nexus在本地搭建私服
 * 根据本地环境修改freedom.gradle中的具体配置
-* 将freedom.gradle拷贝至`~/.gradle/init.d`下
-* 检出freedom资源库，并上传至本地私服
+* 将freedom.gradle拷贝至**~/.gradle/init.d**下
+* 检出需要使用的freedom资源库，并使用命令``gradle publish``上传至本地私服
+* 在具体项目中，通过``org.freedom:freedom-具体模块:具体版本``引用
 
 == 如何统一管理配置？
-使用freedom.gradle
+通过freedom.gradle实现配置统一管理，
+freedom.gradle中目前配置了：
 
-
-
-
-
+* 上传插件
+* spring相关组件的版本
+* 依赖管理插件【未能实现】
